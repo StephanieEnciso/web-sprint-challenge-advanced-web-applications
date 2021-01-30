@@ -9,16 +9,19 @@ const initialCredentials = {
 const Login = () => {
   // make a post request to retrieve a token from the api
   // when you have handled the token, navigate to the BubblePage route
+
+  //state to handle form values and error
   const [credentials, setCredentials] = useState(initialCredentials);
   const [error, setError] = useState('');
-
+ //event handler to handle the on change on the inputs & set state
   const changeHandler = event => {
     setCredentials({
       ...credentials,
       [event.target.name]: event.target.value
     })
   }
-
+  // event handler for form submission that does a post request
+  //also retireves token from api and routes you to the BubblePage
   const logIn = event => {
     event.preventDefault();
     axios.post('http://localhost:5000/api/login', credentials)
@@ -40,12 +43,14 @@ const Login = () => {
           <input 
           type = 'text'
           name = 'username' 
+          placeholder = 'Username'
           value = {credentials.username} 
           onChange = {changeHandler} />
           <label>Password:</label>
           <input 
           type = 'password'
           name = 'password' 
+          placeholder = 'password'
           value = {credentials.password} 
           onChange = {changeHandler} />
           <button>Submit</button>

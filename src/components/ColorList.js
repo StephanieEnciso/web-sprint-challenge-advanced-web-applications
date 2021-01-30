@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
 import EditMenu from './EditMenu';
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 ;
@@ -16,14 +15,23 @@ const ColorList = ({ colors, updateColors }) => {
     setEditing(true);
     setColorToEdit(color);
   };
-
+ //use colorToEdit in order to get the correct color that needs to be in the put
   const saveEdit = e => {
     e.preventDefault();
     axiosWithAuth()
      .put(`/colors/${colorToEdit.id}`, colorToEdit)
      .then(res => {
-       console.log(res.data)
-       
+       // map to make sure the correct color gets updated
+       const mapC = colors.map(color => {
+         if (color.id === res.data.id){
+           return res.data
+         } else{ 
+           return color
+         }
+       })
+
+       //set the state of colors = to the map so the correct color gets updated
+       updateColors(mapC);
        
         console.log(updateColors);
      })
@@ -37,8 +45,16 @@ const ColorList = ({ colors, updateColors }) => {
     axiosWithAuth()
      .delete(`/colors/${color.id}`)
      .then(res => {
-      //  updateColors(res.data);
-      console.log(res)
+       //array method to make the data an integer 
+        
+       const data = parseInt(res.data, 10)
+        // filter method to remove the color with the id from the response
+       const removeColor = colors.filter((color) => {
+          return color.id !== data
+       })
+      //once removed set the rest of the colors to state
+      updateColors(removeColor);
+
      })
      .catch(err => {
        console.log(err.response);
