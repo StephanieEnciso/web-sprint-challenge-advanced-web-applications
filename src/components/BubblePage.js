@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { axiosWithAuth } from '../utils/axiosWithAuth';
 
 import {fetchColors} from '../api/fetchColors';
 import Bubbles from "./Bubbles";
@@ -9,6 +8,9 @@ const BubblePage = () => {
   const [colorList, setColorList] = useState([]);
  // useEffect will invoke the axios with authorization
  //This will make sure the colors render when page mounts
+ // the actual axiosWithAuth is in the api folder
+ //this was to make sure I could test that everything was rendering when it mounts
+
   useEffect( () => {
     async function fetchData(){
       const res = await fetchColors();
@@ -17,17 +19,6 @@ const BubblePage = () => {
     fetchData();
    
   },[])
-  //function to do axios request and set state
-  // const fetchColors = () => {
-  //   axiosWithAuth()
-  //    .get('/colors')
-  //    .then(res => {
-  //      setColorList(res.data);
-  //    })
-  //    .catch(err => {
-  //      console.log(err);
-  //    })
-  // }
 
   return (
     <>
